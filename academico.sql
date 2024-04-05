@@ -1,47 +1,49 @@
 CREATE TABLE facultad (
-    id integer primary key auto_increment,
-    nombre varchar(100),
-    codigo varchar(4)
+    id integer unsigned primary key auto_increment,
+    nombre varchar(100) unique,
+    codigo varchar(4) unique
 );
-
+ 
 CREATE TABLE programa (
-    id integer primary key auto_increment,
-    nombre varchar(100),
-    sigla varchar(4),
-    codigo varchar(4),
-    idfacultad integer,
+    id integer unsigned primary key auto_increment,
+    nombre varchar(100) unique,
+    sigla varchar(4) unique,
+    codigo varchar(4) unique,
+    idfacultad integer unsigned,
     FOREIGN KEY (idfacultad) REFERENCES facultad(id)
 );
 
 CREATE TABLE asignatura (
-    id integer primary key auto_increment,
+    id integer unsigned primary key auto_increment,
     nombre varchar(100),
-    creditos integer(1),
-    codigo varchar(100),
-    horas integer(2)
+    creditos TINYINT,
+    codigo varchar(5) unique,
+    horas TINYINT
 );
 
 CREATE TABLE malla (
-    id integer primary key auto_increment,
-    idasignatura integer,
-    idprograma integer,
+    id integer unsigned primary key auto_increment,
+    idasignatura integer unsigned,
+    idprograma integer unsigned,
+    semestre TINYINT,
     FOREIGN KEY (idasignatura) REFERENCES asignatura(id),
-    FOREIGN KEY (idprograma) REFERENCES programa(id)
+    FOREIGN KEY (idprograma) REFERENCES programa(id),
+    UNIQUE (idasignatura, idprograma)
 );
 
 CREATE TABLE estudiante (
-    id integer primary key auto_increment,
+    id integer unsigned primary key auto_increment,
     nombres varchar(100),
-    documento integer(12),
-    codigo varchar(12),
-    jornada varchar(3),
+    documento varchar(15),
+    codigo varchar(12) unique,
+    jornada varchar(3)
 );
 
 CREATE TABLE matricula (
-    id integer primary key auto_increment,
+    id integer unsigned primary key auto_increment,
     fechamatricula date,
-    idmalla integer,
-    idestudiante integer,
+    idmalla integer unsigned,
+    idestudiante integer unsigned,
     FOREIGN KEY (idmalla) REFERENCES malla(id),
     FOREIGN KEY (idestudiante) REFERENCES estudiante(id)
 );
